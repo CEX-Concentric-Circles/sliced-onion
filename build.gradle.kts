@@ -1,9 +1,9 @@
 plugins {
-    id("org.springframework.boot") version "3.3.0"
-    id("io.spring.dependency-management") version "1.1.5"
+    id("org.springframework.boot") version "3.3.0-SNAPSHOT"
+    id("io.spring.dependency-management") version "1.1.4"
     id("io.freefair.lombok") version "8.1.0"
     kotlin("jvm") version "1.9.24"
-    kotlin("plugin.spring") version "1.9.24"
+    kotlin("plugin.spring") version "1.9.22"
     kotlin("plugin.lombok") version "2.0.0"
     kotlin("plugin.jpa") version "1.9.22"
 }
@@ -18,6 +18,7 @@ java {
 repositories {
     mavenCentral()
     maven { url = uri("https://repo.spring.io/milestone") }
+    maven { url = uri("https://repo.spring.io/snapshot") }
 }
 
 extra["springModulithVersion"] = "1.2.0-RC1"
@@ -32,9 +33,10 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.modulith:spring-modulith-starter-core")
+    implementation("org.springframework.modulith:spring-modulith-events-api")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("com.h2database:h2")
     runtimeOnly("org.springframework.boot:spring-boot-devtools")
+    runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.modulith:spring-modulith-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
