@@ -12,14 +12,6 @@ class InventoryController(
 ) {
 
     @GetMapping
-    fun getInventories(): ResponseEntity<List<InventoryDto>> {
-        return ResponseEntity.ok().body(
-            inventoryService.getInventories().map { inventory: Inventory ->
-                InventoryDto(
-                    inventory.inventoryId,
-                    inventory.productId,
-                    inventory.stockCount
-                )
-            })
-    }
+    fun getInventories(): ResponseEntity<List<InventoryDto>> = ResponseEntity.ok()
+        .body(inventoryService.getInventories().map { inventory: Inventory -> InventoryDto(inventory) })
 }

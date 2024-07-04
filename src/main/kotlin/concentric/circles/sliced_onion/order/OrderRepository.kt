@@ -6,5 +6,8 @@ import java.util.*
 
 @Repository
 interface OrderRepository : JpaRepository<Order, UUID> {
+
+    fun findByOrderId(orderId: UUID): Order?
+
     override fun findAll(): List<Order>
 }

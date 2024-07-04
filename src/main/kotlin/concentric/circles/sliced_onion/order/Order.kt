@@ -16,11 +16,18 @@ class Order(
 
     @Column
     @Temporal(TemporalType.DATE)
-    val created: Date,
+    val created: Date = Date(),
 
     @Column
     @Enumerated(EnumType.STRING)
-    var status: OrderStatus
+    var status: OrderStatus = OrderStatus.OPEN
 ) {
-    constructor(orderDto: OrderDto) : this(UUID.randomUUID(), orderDto.productId, orderDto.created, orderDto.status)
+    constructor(productId: UUID) : this(UUID.randomUUID(), productId, Date(), OrderStatus.OPEN)
+
+    constructor(orderDto: OrderDto) : this(
+        UUID.randomUUID(),
+        orderDto.productId,
+        orderDto.created!!,
+        orderDto.status!!
+    )
 }
