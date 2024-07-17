@@ -15,7 +15,8 @@ class ProductService(
     @Transactional
     fun createProduct(productDto: ProductDto): Product? {
         val product = Product(productDto)
+        productRepository.save(product)
         eventPublisher.publishEvent(ProductCreated(product.productId))
-        return productRepository.save(product)
+        return product
     }
 }

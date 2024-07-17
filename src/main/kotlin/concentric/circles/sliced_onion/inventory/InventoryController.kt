@@ -1,9 +1,8 @@
 package concentric.circles.sliced_onion.inventory
 
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("/inventory")
@@ -14,4 +13,11 @@ class InventoryController(
     @GetMapping
     fun getInventories(): ResponseEntity<List<InventoryDto>> = ResponseEntity.ok()
         .body(inventoryService.getInventories().map { inventory: Inventory -> InventoryDto(inventory) })
+
+    @PutMapping("/{inventoryId}/restock")
+    fun increaseInventoryQuantity(
+        @PathVariable inventoryId: UUID
+    ): ResponseEntity<InventoryDto?> {
+        return ResponseEntity.ok().body(null)
+    }
 }

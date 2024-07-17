@@ -2,6 +2,7 @@ package concentric.circles.sliced_onion
 
 import org.junit.jupiter.api.Test
 import org.springframework.modulith.core.ApplicationModules
+import org.springframework.modulith.docs.Documenter
 
 class ModularityTests {
 
@@ -9,6 +10,14 @@ class ModularityTests {
 
     @Test
     fun verifyModularity() {
-        modules.forEach{ println(it) }
+        modules.forEach { println(it) }
+    }
+
+
+    @Test
+    fun writeDocumentationSnippets() {
+        Documenter(modules)
+            .writeModulesAsPlantUml()
+            //.writeIndividualModulesAsPlantUml()
     }
 }

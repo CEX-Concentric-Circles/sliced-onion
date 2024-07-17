@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mysql
+    restart: no
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: sliced-onion
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: sliced-onion

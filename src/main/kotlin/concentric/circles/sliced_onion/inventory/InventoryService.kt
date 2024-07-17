@@ -31,11 +31,11 @@ class InventoryService(
 
         if (inventory === null) throw Exception("No Inventory found for this Product ID")
 
-        if (inventory.stockCount <= 0) throw Exception("Product already out of stock")
+        if (inventory.quantity <= 0) throw Exception("Product already out of stock")
 
         when (event.status) {
             "COMPLETED" -> {
-                inventory.stockCount -= 1;
+                inventory.quantity -= 1;
                 inventoryRepository.save(inventory);
             }
         }

@@ -15,7 +15,12 @@ class Inventory(
     val productId: UUID,
 
     @Column
-    var stockCount: Int = 0
+    var quantity: Int = 0
 ) {
-    constructor(inventoryDto: InventoryDto) : this(UUID.randomUUID(), inventoryDto.productId, inventoryDto.stockCount)
+    constructor(inventoryDto: InventoryDto) : this(UUID.randomUUID(), inventoryDto.productId, inventoryDto.quantity)
+
+    fun increaseQuantity(amount: Int): Inventory {
+        this.quantity += amount;
+        return this
+    }
 }

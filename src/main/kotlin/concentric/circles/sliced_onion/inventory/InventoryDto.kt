@@ -5,7 +5,7 @@ import java.util.*
 class InventoryDto(
     val inventoryId: UUID?,
     val productId: UUID,
-    val stockCount: Int
+    val quantity: Int
 ) {
-    constructor(inventory: Inventory) : this(inventory.inventoryId, inventory.productId, inventory.stockCount)
+    constructor(inventory: Inventory) : this(inventory.inventoryId, inventory.productId, inventory.quantity)
 }

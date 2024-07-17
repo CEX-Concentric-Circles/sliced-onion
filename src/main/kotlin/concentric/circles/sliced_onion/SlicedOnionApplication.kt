@@ -11,5 +11,3 @@ class SlicedOnionApplication
 fun main(args: Array<String>) {
     runApplication<SlicedOnionApplication>(*args)
 }
-
-
