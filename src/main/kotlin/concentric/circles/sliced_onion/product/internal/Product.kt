@@ -1,5 +1,6 @@
-package concentric.circles.sliced_onion.product
+package concentric.circles.sliced_onion.product.internal
 
+import concentric.circles.sliced_onion.Price
 import jakarta.persistence.*
 import java.util.*
 
@@ -15,7 +16,7 @@ class Product(
     var name: String,
 
     @Column
-    var price: Double
+    var price: Price
 ) {
     constructor(productDto: ProductDto) : this(UUID.randomUUID(), productDto.name, productDto.price)
 }

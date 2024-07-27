@@ -1,4 +1,4 @@
-package concentric.circles.sliced_onion.inventory
+package concentric.circles.sliced_onion.inventory.internal
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

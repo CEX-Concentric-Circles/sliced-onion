@@ -10,7 +10,8 @@ class ModularityTests {
 
     @Test
     fun verifyModularity() {
-        modules.forEach { println(it) }
+        ApplicationModules.of(SlicedOnionApplication::class.java).verify()
+
     }
 
 
@@ -18,6 +19,6 @@ class ModularityTests {
     fun writeDocumentationSnippets() {
         Documenter(modules)
             .writeModulesAsPlantUml()
-            //.writeIndividualModulesAsPlantUml()
+//            .writeIndividualModulesAsPlantUml();
     }
 }

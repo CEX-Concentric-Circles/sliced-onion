@@ -1,7 +1,8 @@
-package concentric.circles.sliced_onion.inventory
+package concentric.circles.sliced_onion.inventory.internal
 
 import concentric.circles.sliced_onion.order.OrderEvent
 import concentric.circles.sliced_onion.product.ProductCreated
+import concentric.circles.sliced_onion.product.ProductDeleted
 import org.springframework.context.event.EventListener
 import org.springframework.modulith.events.ApplicationModuleListener
 import org.springframework.stereotype.Service
@@ -24,6 +25,14 @@ class InventoryService(
         }
     }
 
+    @EventListener
+    fun on(event: ProductDeleted) {
+        val inventory = inventoryRepository.findByProductId(event.productId)
+
+        if (inventory != null) {
+            inventoryRepository.delete(inventory)
+        }
+    }
 
     @EventListener
     fun on(event: OrderEvent) {

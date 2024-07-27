@@ -1,4 +1,4 @@
-package concentric.circles.sliced_onion.inventory
+package concentric.circles.sliced_onion.inventory.internal
 
 import jakarta.persistence.*
 import java.util.*

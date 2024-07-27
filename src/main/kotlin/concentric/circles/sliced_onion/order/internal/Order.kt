@@ -1,4 +1,4 @@
-package concentric.circles.sliced_onion.order
+package concentric.circles.sliced_onion.order.internal
 
 import jakarta.persistence.*
 import java.util.*

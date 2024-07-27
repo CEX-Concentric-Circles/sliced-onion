@@ -1,11 +1,12 @@
-package concentric.circles.sliced_onion.product
+package concentric.circles.sliced_onion.product.internal
 
+import concentric.circles.sliced_onion.Price
 import java.util.*
 
 class ProductDto(
     val productId: UUID?,
     val name: String,
-    val price: Double
+    val price: Price
 ) {
     constructor(product: Product) : this(product.productId, product.name, product.price)
 }

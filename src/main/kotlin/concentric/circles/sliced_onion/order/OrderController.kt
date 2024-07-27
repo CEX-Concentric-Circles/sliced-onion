@@ -1,5 +1,8 @@
 package concentric.circles.sliced_onion.order
 
+import concentric.circles.sliced_onion.order.internal.Order
+import concentric.circles.sliced_onion.order.internal.OrderDto
+import concentric.circles.sliced_onion.order.internal.OrderService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
