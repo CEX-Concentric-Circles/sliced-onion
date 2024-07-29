@@ -14,7 +14,8 @@ class OrderController(private val orderService: OrderService) {
 
     @PostMapping
     fun createOrder(@RequestBody orderDto: OrderDto): ResponseEntity<OrderDto?> {
-        val order = orderService.createOrder(orderDto.productIds) ?: return ResponseEntity.badRequest().body(null)
+        val order = orderService.createOrder(orderDto.customerId, orderDto.productIds)
+            ?: return ResponseEntity.badRequest().body(null)
         return ResponseEntity.ok().body(OrderDto(order))
     }
 
