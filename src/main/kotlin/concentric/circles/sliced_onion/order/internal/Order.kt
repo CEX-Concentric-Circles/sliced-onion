@@ -12,6 +12,9 @@ class Order(
     val orderId: UUID,
 
     @Column
+    val customerId: UUID,
+
+    @Column
     val productId: UUID,
 
     @Column
@@ -22,10 +25,17 @@ class Order(
     @Enumerated(EnumType.STRING)
     var status: OrderStatus = OrderStatus.OPEN
 ) {
-    constructor(productId: UUID) : this(UUID.randomUUID(), productId, Date(), OrderStatus.OPEN)
+    constructor(customerId: UUID, productId: UUID) : this(
+        UUID.randomUUID(),
+        customerId,
+        productId,
+        Date(),
+        OrderStatus.OPEN
+    )
 
     constructor(orderDto: OrderDto) : this(
         UUID.randomUUID(),
+        orderDto.customerId,
         orderDto.productId,
         orderDto.created!!,
         orderDto.status!!

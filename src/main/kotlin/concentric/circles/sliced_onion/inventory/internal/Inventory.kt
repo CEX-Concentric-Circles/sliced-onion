@@ -20,7 +20,7 @@ class Inventory(
     constructor(inventoryDto: InventoryDto) : this(UUID.randomUUID(), inventoryDto.productId, inventoryDto.quantity)
 
     fun increaseQuantity(amount: Int): Inventory {
-        this.quantity += amount;
+        this.quantity += amount
         return this
     }
 }

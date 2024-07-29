@@ -46,8 +46,8 @@ class InventoryService(
 
         when (event.status) {
             "COMPLETED" -> {
-                inventory.quantity -= 1;
-                inventoryRepository.save(inventory);
+                inventory.quantity -= 1
+                inventoryRepository.save(inventory)
             }
         }
     }
