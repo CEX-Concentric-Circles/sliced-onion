@@ -12,6 +12,12 @@ class InventoryController(private val inventoryService: InventoryService) {
     fun getInventories(): ResponseEntity<List<InventoryDto>> = ResponseEntity.ok()
         .body(inventoryService.getInventories().map { inventory: Inventory -> InventoryDto(inventory) })
 
+    @PostMapping
+    fun createInventory(@RequestBody inventoryDto: InventoryDto): ResponseEntity<InventoryDto?> {
+        val inventory = inventoryService.createInventory(inventoryDto) ?: return ResponseEntity.badRequest().body(null)
+        return ResponseEntity.ok().body(InventoryDto(inventory))
+    }
+
     @GetMapping("/{inventoryId}")
     fun getInventory(@PathVariable inventoryId: UUID): ResponseEntity<InventoryDto?> {
         val inventory = inventoryService.getInventory(inventoryId) ?: return ResponseEntity.notFound().build()
@@ -23,6 +29,8 @@ class InventoryController(private val inventoryService: InventoryService) {
         @PathVariable inventoryId: UUID,
         @RequestBody quantity: Int
     ): ResponseEntity<InventoryDto?> {
-        return ResponseEntity.ok().body(null)
+        val inventory = inventoryService.increaseInventoryQuantity(inventoryId, quantity)
+            ?: return ResponseEntity.notFound().build()
+        return ResponseEntity.ok().body(InventoryDto(inventory))
     }
 }
