@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql
+    image: mysql:latest
     restart: no
     ports:
       - "3306:3306"

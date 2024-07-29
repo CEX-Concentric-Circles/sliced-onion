@@ -6,5 +6,7 @@ import java.util.*
 
 @Repository
 interface InventoryRepository : JpaRepository<Inventory, UUID> {
+    fun findByInventoryId(inventoryId: UUID): Inventory?
+
     fun findByProductId(productId: UUID): Inventory?
 }

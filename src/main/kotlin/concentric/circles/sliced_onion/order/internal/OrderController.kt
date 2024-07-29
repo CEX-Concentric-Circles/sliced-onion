@@ -1,26 +1,34 @@
-package concentric.circles.sliced_onion.order
+package concentric.circles.sliced_onion.order.internal
 
-import concentric.circles.sliced_onion.order.internal.Order
-import concentric.circles.sliced_onion.order.internal.OrderDto
-import concentric.circles.sliced_onion.order.internal.OrderService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
 @RestController
 @RequestMapping("/order")
-class OrderController(
-    val orderService: OrderService
-) {
+class OrderController(private val orderService: OrderService) {
 
     @GetMapping
     fun getOrders(): ResponseEntity<List<OrderDto>> =
         ResponseEntity.ok().body(orderService.getOrders().map { order: Order -> OrderDto(order) })
 
     @PostMapping
-    fun postOrder(@RequestBody orderDto: OrderDto): ResponseEntity<OrderDto?> {
+    fun createOrder(@RequestBody orderDto: OrderDto): ResponseEntity<OrderDto?> {
         val order = orderService.createOrder(orderDto.productId) ?: return ResponseEntity.badRequest().body(null)
         return ResponseEntity.ok().body(OrderDto(order))
+    }
+
+    @GetMapping("/{orderId}")
+    fun getOrder(@PathVariable orderId: UUID): ResponseEntity<OrderDto?> {
+        val order = orderService.getOrder(orderId) ?: return ResponseEntity.notFound().build()
+        return ResponseEntity.ok().body(OrderDto(order))
+    }
+
+    @DeleteMapping("/{orderId}")
+    fun deleteOrder(@PathVariable orderId: UUID): ResponseEntity<OrderDto> {
+        val order = orderService.getOrder(orderId) ?: return ResponseEntity.notFound().build()
+        orderService.deleteOrder(order)
+        return ResponseEntity.noContent().build()
     }
 
     @PutMapping("/{orderId}/complete")

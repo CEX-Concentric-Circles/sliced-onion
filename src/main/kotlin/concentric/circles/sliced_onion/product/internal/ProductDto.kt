@@ -1,6 +1,5 @@
 package concentric.circles.sliced_onion.product.internal
 
-import concentric.circles.sliced_onion.Price
 import java.util.*
 
 class ProductDto(

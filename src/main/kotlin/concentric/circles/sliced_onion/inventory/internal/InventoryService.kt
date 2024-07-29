@@ -15,6 +15,8 @@ class InventoryService(
 
     fun getInventories(): List<Inventory> = inventoryRepository.findAll()
 
+    fun getInventory(inventoryId: UUID) = inventoryRepository.findByInventoryId(inventoryId)
+
     @ApplicationModuleListener
     fun on(event: ProductCreated) {
         if (inventoryRepository.findByProductId(event.productId) == null) {

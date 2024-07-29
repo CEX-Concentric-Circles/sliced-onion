@@ -14,6 +14,8 @@ class OrderService(
 
     fun getOrders() = orderRepository.findAll()
 
+    fun getOrder(orderId: UUID) = orderRepository.findByOrderId(orderId)
+
     @Transactional
     fun createOrder(productId: UUID): Order? {
         val order = Order(productId)
@@ -29,5 +31,10 @@ class OrderService(
         order.status = OrderStatus.COMPLETED
         eventPublisher.publishEvent(OrderEvent(order.productId, order.status.toString()))
         return orderRepository.save(order)
+    }
+
+    @Transactional
+    fun deleteOrder(order: Order){
+        orderRepository.delete(order)
     }
 }

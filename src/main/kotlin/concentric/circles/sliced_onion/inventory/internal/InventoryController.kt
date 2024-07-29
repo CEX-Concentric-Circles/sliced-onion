@@ -1,25 +1,27 @@
-package concentric.circles.sliced_onion.inventory
+package concentric.circles.sliced_onion.inventory.internal
 
-import concentric.circles.sliced_onion.inventory.internal.Inventory
-import concentric.circles.sliced_onion.inventory.internal.InventoryDto
-import concentric.circles.sliced_onion.inventory.internal.InventoryService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
 @RestController
 @RequestMapping("/inventory")
-class InventoryController(
-    private val inventoryService: InventoryService
-) {
+class InventoryController(private val inventoryService: InventoryService) {
 
     @GetMapping
     fun getInventories(): ResponseEntity<List<InventoryDto>> = ResponseEntity.ok()
         .body(inventoryService.getInventories().map { inventory: Inventory -> InventoryDto(inventory) })
 
+    @GetMapping("/{inventoryId}")
+    fun getInventory(@PathVariable inventoryId: UUID): ResponseEntity<InventoryDto?> {
+        val inventory = inventoryService.getInventory(inventoryId) ?: return ResponseEntity.notFound().build()
+        return ResponseEntity.ok().body(InventoryDto(inventory))
+    }
+
     @PutMapping("/{inventoryId}/restock")
     fun increaseInventoryQuantity(
-        @PathVariable inventoryId: UUID
+        @PathVariable inventoryId: UUID,
+        @RequestBody quantity: Int
     ): ResponseEntity<InventoryDto?> {
         return ResponseEntity.ok().body(null)
     }
