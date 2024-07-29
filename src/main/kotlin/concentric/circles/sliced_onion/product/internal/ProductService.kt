@@ -1,8 +1,10 @@
 package concentric.circles.sliced_onion.product.internal
 
+import concentric.circles.sliced_onion.inventory.InventoryEvent
 import concentric.circles.sliced_onion.product.ProductCreated
 import concentric.circles.sliced_onion.product.ProductDeleted
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -36,5 +38,10 @@ class ProductService(
     fun deleteProduct(product: Product) {
         productRepository.delete(product)
         eventPublisher.publishEvent(ProductDeleted(product.productId))
+    }
+
+    @EventListener
+    fun on(event: InventoryEvent) {
+        productRepository.findByProductId(event.productId) ?: throw Exception("No Product found with this Product ID")
     }
 }

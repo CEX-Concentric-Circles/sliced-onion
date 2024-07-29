@@ -2,7 +2,7 @@ package concentric.circles.sliced_onion.order.internal
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.UUID
+import java.util.*
 
 @RestController
 @RequestMapping("/order")
@@ -14,7 +14,8 @@ class OrderController(private val orderService: OrderService) {
 
     @PostMapping
     fun createOrder(@RequestBody orderDto: OrderDto): ResponseEntity<OrderDto?> {
-        val order = orderService.createOrder(orderDto.productId) ?: return ResponseEntity.badRequest().body(null)
+        val order = orderService.createOrder(orderDto.customerId, orderDto.productIds)
+            ?: return ResponseEntity.badRequest().body(null)
         return ResponseEntity.ok().body(OrderDto(order))
     }
 

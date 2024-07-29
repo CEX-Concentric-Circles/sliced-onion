@@ -12,7 +12,11 @@ class Order(
     val orderId: UUID,
 
     @Column
-    val productId: UUID,
+    val customerId: UUID,
+
+    @Column
+    @OneToMany(mappedBy = "orderId", cascade = [(CascadeType.ALL)])
+    val orderLineItems: MutableList<OrderLineItem>,
 
     @Column
     @Temporal(TemporalType.DATE)
@@ -22,12 +26,5 @@ class Order(
     @Enumerated(EnumType.STRING)
     var status: OrderStatus = OrderStatus.OPEN
 ) {
-    constructor(productId: UUID) : this(UUID.randomUUID(), productId, Date(), OrderStatus.OPEN)
-
-    constructor(orderDto: OrderDto) : this(
-        UUID.randomUUID(),
-        orderDto.productId,
-        orderDto.created!!,
-        orderDto.status!!
-    )
+    constructor(customerId: UUID) : this(UUID.randomUUID(), customerId, mutableListOf(), Date(), OrderStatus.OPEN)
 }
