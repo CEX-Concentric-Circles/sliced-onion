@@ -17,10 +17,11 @@ class OrderService(
     fun getOrder(orderId: UUID) = orderRepository.findByOrderId(orderId)
 
     @Transactional
-    fun createOrder(productIds: List<UUID>): Order? {
-        val order = orderRepository.save(Order())
+    fun createOrder(customerId: UUID, productIds: List<UUID>): Order? {
+        val order = orderRepository.save(Order(customerId))
         eventPublisher.publishEvent(
             OrderEvent(
+                customerId,
                 productIds,
                 order.status.toString()
             )
@@ -38,6 +39,7 @@ class OrderService(
         order.status = OrderStatus.COMPLETED
         eventPublisher.publishEvent(
             OrderEvent(
+                order.customerId,
                 order.orderLineItems.map { orderLineItem: OrderLineItem -> orderLineItem.productId },
                 order.status.toString()
             )
