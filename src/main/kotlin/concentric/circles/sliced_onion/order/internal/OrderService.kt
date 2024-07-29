@@ -4,7 +4,7 @@ import concentric.circles.sliced_onion.order.OrderEvent
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
+import java.util.*
 
 @Service
 class OrderService(
@@ -17,9 +17,16 @@ class OrderService(
     fun getOrder(orderId: UUID) = orderRepository.findByOrderId(orderId)
 
     @Transactional
-    fun createOrder(productId: UUID): Order? {
-        val order = Order(productId)
-        eventPublisher.publishEvent(OrderEvent(productId, order.status.toString()))
+    fun createOrder(productIds: List<UUID>): Order? {
+        val order = orderRepository.save(Order())
+        eventPublisher.publishEvent(
+            OrderEvent(
+                productIds,
+                order.status.toString()
+            )
+        )
+
+        order.orderLineItems.addAll(productIds.map { productId: UUID -> OrderLineItem(order.orderId, productId) })
         return orderRepository.save(order)
     }
 
@@ -29,12 +36,17 @@ class OrderService(
         if (order.status === OrderStatus.COMPLETED) return order
 
         order.status = OrderStatus.COMPLETED
-        eventPublisher.publishEvent(OrderEvent(order.productId, order.status.toString()))
+        eventPublisher.publishEvent(
+            OrderEvent(
+                order.orderLineItems.map { orderLineItem: OrderLineItem -> orderLineItem.productId },
+                order.status.toString()
+            )
+        )
         return orderRepository.save(order)
     }
 
     @Transactional
-    fun deleteOrder(order: Order){
+    fun deleteOrder(order: Order) {
         orderRepository.delete(order)
     }
 }

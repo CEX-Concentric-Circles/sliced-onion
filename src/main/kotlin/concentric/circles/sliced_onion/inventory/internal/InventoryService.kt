@@ -55,19 +55,19 @@ class InventoryService(
 
     @EventListener
     fun on(event: OrderEvent) {
-        val inventory = inventoryRepository.findByProductId(event.productId)
+        for (productId in event.productIds) {
+            val inventory = inventoryRepository.findByProductId(productId)
 
-        if (inventory === null) throw Exception("No Inventory found for this Product ID")
+            if (inventory === null) throw Exception("No Inventory found for this Product ID")
 
-        if (inventory.quantity <= 0) throw Exception("Product already out of stock")
+            if (inventory.quantity <= 0) throw Exception("Product already out of stock")
 
-        when (event.status) {
-            "COMPLETED" -> {
-                inventory.quantity -= 1;
-                inventoryRepository.save(inventory);
+            when (event.status) {
+                "COMPLETED" -> {
+                    inventory.quantity -= 1
+                    inventoryRepository.save(inventory)
+                }
             }
         }
     }
-
-
 }
