@@ -59,4 +59,5 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    jvmArgs = listOf("-XX:+EnableDynamicAgentLoading", "-Djdk.instrument.traceUsage")
 }
