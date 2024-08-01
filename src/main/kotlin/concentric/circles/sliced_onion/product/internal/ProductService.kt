@@ -1,10 +1,11 @@
 package concentric.circles.sliced_onion.product.internal
 
-import concentric.circles.sliced_onion.inventory.InventoryEvent
+import concentric.circles.sliced_onion.InventoryEvent
 import concentric.circles.sliced_onion.product.ProductCreated
 import concentric.circles.sliced_onion.product.ProductDeleted
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.event.EventListener
+import org.springframework.modulith.events.ApplicationModuleListener
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*

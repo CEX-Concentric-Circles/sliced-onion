@@ -36,6 +36,7 @@ dependencies {
     implementation("org.springframework.modulith:spring-modulith-events-api")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    runtimeOnly("org.springframework.modulith:spring-modulith-events-kafka")
     runtimeOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
