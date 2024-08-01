@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.beans.factory.annotation.Autowired
 import org.json.JSONObject
 import org.junit.jupiter.api.*
+import java.util.UUID
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,6 +28,31 @@ class IntegrationTest {
     private var productId: String? = null
     private var inventoryId: String? = null
     private var orderId: String? = null
+    private var customerId: UUID? = null
+
+    @Test
+    @Order(0)
+    fun `should create customer`() {
+        val createCustomerResponse = mockMvc.perform(
+            MockMvcRequestBuilders.post("/customer")
+                .contentType("application/json")
+                .content("{ \"firstName\": \"John\", \"lastName\": \"Doe\", \"email\": \"john.doe@example.com\" }")
+        )
+            .andExpect(MockMvcResultMatchers.status().isCreated)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.customerId").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("John"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Doe"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("john.doe@example.com"))
+            .andReturn()
+
+        val responseContent = createCustomerResponse.response.contentAsString
+        println("Create Customer Response: $responseContent")
+
+        val jsonResponse = JSONObject(responseContent)
+        customerId = UUID.fromString(jsonResponse.optString("customerId", null))
+        assertNotNull(customerId, "Customer ID should not be null")
+        println("Customer ID set to: $customerId")
+    }
 
     @Test
     @Order(1)
@@ -102,11 +128,12 @@ class IntegrationTest {
     @Order(3)
     fun `should place an order`() {
         val validProductId = productId ?: throw IllegalStateException("Product ID is not initialized")
+        val validCustomerId = customerId ?: throw IllegalStateException("Customer ID is not initialized")
 
         val createOrderResponse = mockMvc.perform(
             MockMvcRequestBuilders.post("/order")
                 .contentType("application/json")
-                .content("{ \"productIds\": [\"$validProductId\"], \"status\": \"OPEN\" }")
+                .content("{\"customerId\": \"${validCustomerId}\", \"productIds\": [\"$validProductId\"]}")
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.orderId").exists())

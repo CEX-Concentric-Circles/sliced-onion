@@ -84,7 +84,7 @@ class InventoryServiceTest {
     fun `should handle OrderEvent`() {
         val productId = UUID.randomUUID()
         val inventory = Inventory(UUID.randomUUID(), productId, 10)
-        val orderEvent = OrderEvent(listOf(productId), "COMPLETED")
+        val orderEvent = OrderEvent(UUID.randomUUID(), listOf(productId), "COMPLETED")
         Mockito.`when`(inventoryRepository.findByProductId(productId)).thenReturn(inventory)
         Mockito.`when`(inventoryRepository.save(inventory)).thenReturn(inventory)
 

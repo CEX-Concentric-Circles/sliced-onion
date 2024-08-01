@@ -32,12 +32,13 @@ class OrderServiceTest {
 
     @Test
     fun `should create order and publish event`() {
+        val customerId = UUID.randomUUID()
         val productIds = listOf(UUID.randomUUID(), UUID.randomUUID())
-        val order = Order()
+        val order = Order(customerId)
 
         `when`(orderRepository.save(any(Order::class.java))).thenReturn(order)
 
-        val createdOrder = orderService.createOrder(productIds)
+        val createdOrder = orderService.createOrder(customerId, productIds)
 
         assertNotNull(createdOrder)
         verify(orderRepository, times(2)).save(any(Order::class.java))
@@ -50,7 +51,7 @@ class OrderServiceTest {
 
     @Test
     fun `should complete order and publish event`() {
-        val order = Order()
+        val order = Order(UUID.randomUUID())
         val orderId = order.orderId
         order.orderLineItems.add(OrderLineItem(orderId, UUID.randomUUID()))
 
@@ -72,7 +73,7 @@ class OrderServiceTest {
 
     @Test
     fun `should delete order`() {
-        val order = Order()
+        val order = Order(UUID.randomUUID())
 
         doNothing().`when`(orderRepository).delete(order)
 

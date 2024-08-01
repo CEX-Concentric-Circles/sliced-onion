@@ -34,7 +34,7 @@ class OrderControllerTest {
 
     @Test
     fun `should return all orders`() {
-        val orders = listOf(Order(), Order())
+        val orders = listOf(Order(UUID.randomUUID()), Order(UUID.randomUUID()))
         Mockito.`when`(orderService.getOrders()).thenReturn(orders)
 
         mockMvc.perform(get("/order"))
@@ -44,15 +44,16 @@ class OrderControllerTest {
 
     @Test
     fun `should create order`() {
-        val orderDto = OrderDto(null, listOf(UUID.randomUUID(), UUID.randomUUID()), null, null)
-        val order = Order()
+        val customerId = UUID.randomUUID()
+        val orderDto = OrderDto(null, customerId, listOf(UUID.randomUUID(), UUID.randomUUID()), null, null)
+        val order = Order(customerId)
 
-        Mockito.`when`(orderService.createOrder(orderDto.productIds)).thenReturn(order)
+        Mockito.`when`(orderService.createOrder(customerId, orderDto.productIds)).thenReturn(order)
 
         mockMvc.perform(
             post("/order")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"productIds\":[\"${orderDto.productIds[0]}\",\"${orderDto.productIds[1]}\"]}")
+                .content("{\"customerId\": \"${customerId}\",\"productIds\":[\"${orderDto.productIds[0]}\",\"${orderDto.productIds[1]}\"]}")
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.orderId").value(order.orderId.toString()))
@@ -60,7 +61,7 @@ class OrderControllerTest {
 
     @Test
     fun `should return order by id`() {
-        val order = Order()
+        val order = Order(UUID.randomUUID())
         val orderId = order.orderId
         Mockito.`when`(orderService.getOrder(orderId)).thenReturn(order)
 
@@ -80,7 +81,7 @@ class OrderControllerTest {
 
     @Test
     fun `should delete order`() {
-        val order = Order()
+        val order = Order(UUID.randomUUID())
         val orderId = order.orderId
         Mockito.`when`(orderService.getOrder(orderId)).thenReturn(order)
         Mockito.doNothing().`when`(orderService).deleteOrder(order)
@@ -91,7 +92,7 @@ class OrderControllerTest {
 
     @Test
     fun `should complete order`() {
-        val order = Order()
+        val order = Order(UUID.randomUUID())
         val orderId = order.orderId
         Mockito.`when`(orderService.completeOrder(orderId)).thenAnswer {
             order.status = OrderStatus.COMPLETED
