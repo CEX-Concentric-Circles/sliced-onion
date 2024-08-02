@@ -19,6 +19,6 @@ class ModularityTests {
     fun writeDocumentationSnippets() {
         Documenter(modules)
             .writeModulesAsPlantUml()
-//            .writeIndividualModulesAsPlantUml();
+            .writeIndividualModulesAsPlantUml();
     }
 }

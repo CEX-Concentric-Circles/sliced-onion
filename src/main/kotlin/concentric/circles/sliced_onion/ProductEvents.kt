@@ -1,7 +1,6 @@
 package concentric.circles.sliced_onion
 
 import org.jmolecules.event.types.DomainEvent
-import org.springframework.modulith.events.Externalized
 import java.util.*
 
 class ProductCreated(val productId: UUID) : DomainEvent

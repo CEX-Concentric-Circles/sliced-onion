@@ -1,6 +1,6 @@
 package concentric.circles.sliced_onion.customer.internal
 
-import concentric.circles.sliced_onion.order.OrderEvent
+import concentric.circles.sliced_onion.OrderEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import java.util.*

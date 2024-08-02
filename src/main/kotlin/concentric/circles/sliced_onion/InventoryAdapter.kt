@@ -1,8 +1,5 @@
 package concentric.circles.sliced_onion
 
-import concentric.circles.sliced_onion.order.OrderEvent
-import concentric.circles.sliced_onion.product.ProductCreated
-import concentric.circles.sliced_onion.product.ProductDeleted
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.event.EventListener
 import org.springframework.http.*
