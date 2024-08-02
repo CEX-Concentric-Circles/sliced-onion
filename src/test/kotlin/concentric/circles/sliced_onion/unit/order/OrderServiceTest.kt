@@ -1,6 +1,6 @@
 package concentric.circles.sliced_onion.unit.order
 
-import concentric.circles.sliced_onion.order.OrderEvent
+import concentric.circles.sliced_onion.OrderEvent
 import concentric.circles.sliced_onion.order.internal.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull

@@ -3,9 +3,9 @@ package concentric.circles.sliced_onion.unit.inventory
 import concentric.circles.sliced_onion.inventory.internal.Inventory
 import concentric.circles.sliced_onion.inventory.internal.InventoryRepository
 import concentric.circles.sliced_onion.inventory.internal.InventoryService
-import concentric.circles.sliced_onion.order.OrderEvent
-import concentric.circles.sliced_onion.product.ProductCreated
-import concentric.circles.sliced_onion.product.ProductDeleted
+import concentric.circles.sliced_onion.OrderEvent
+import concentric.circles.sliced_onion.ProductCreated
+import concentric.circles.sliced_onion.ProductDeleted
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
