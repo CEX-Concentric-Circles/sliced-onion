@@ -1,6 +1,6 @@
 package concentric.circles.sliced_onion.order.internal
 
-import concentric.circles.sliced_onion.order.OrderEvent
+import concentric.circles.sliced_onion.OrderEvent
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

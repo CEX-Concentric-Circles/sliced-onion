@@ -1,7 +1,7 @@
 package concentric.circles.sliced_onion.unit.product
 
-import concentric.circles.sliced_onion.product.ProductCreated
-import concentric.circles.sliced_onion.product.ProductDeleted
+import concentric.circles.sliced_onion.ProductCreated
+import concentric.circles.sliced_onion.ProductDeleted
 import concentric.circles.sliced_onion.product.internal.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

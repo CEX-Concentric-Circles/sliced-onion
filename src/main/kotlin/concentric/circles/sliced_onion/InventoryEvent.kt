@@ -1,4 +1,4 @@
-package concentric.circles.sliced_onion.inventory
+package concentric.circles.sliced_onion
 
 import org.jmolecules.event.types.DomainEvent
 import java.util.UUID
