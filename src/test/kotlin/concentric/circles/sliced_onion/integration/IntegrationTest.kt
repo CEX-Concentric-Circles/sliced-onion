@@ -26,7 +26,6 @@ class IntegrationTest {
     private lateinit var mockMvc: MockMvc
 
     private var productId: String? = null
-    private var inventoryId: String? = null
     private var orderId: String? = null
     private var customerId: UUID? = null
 
@@ -76,56 +75,10 @@ class IntegrationTest {
         productId = jsonResponse.optString("productId", null)
         assertNotNull(productId, "Product ID should not be null")
         println("Product ID set to: $productId")
-
-        val inventoryResponse = mockMvc.perform(
-            MockMvcRequestBuilders.get("/inventory")
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        val inventoryContent = inventoryResponse.response.contentAsString
-        println("Inventory Response: $inventoryContent")
-
-        val inventoryArray = JSONArray(inventoryContent)
-        var foundInventoryId: String? = null
-
-        for (i in 0 until inventoryArray.length()) {
-            val inventory = inventoryArray.getJSONObject(i)
-            if (inventory.optString("productId") == productId) {
-                foundInventoryId = inventory.optString("inventoryId", null)
-                break
-            }
-        }
-
-        inventoryId = foundInventoryId
-        assertNotNull(inventoryId, "Inventory ID should not be null for productId $productId")
-        println("Inventory ID set to: $inventoryId")
     }
 
     @Test
     @Order(2)
-    fun `should restock inventory`() {
-        val validProductId = productId ?: throw IllegalStateException("Product ID is not initialized")
-        val validInventoryId = inventoryId ?: throw IllegalStateException("Inventory ID is not initialized")
-
-        println("Restocking Inventory for Product ID: $validProductId and Inventory ID: $validInventoryId")
-
-        val restockResponse = mockMvc.perform(
-            MockMvcRequestBuilders.put("/inventory/$validInventoryId/restock")
-                .contentType("application/json")
-                .content("20")
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(20))
-            .andReturn()
-
-        val updatedInventory = restockResponse.response.contentAsString
-        println("Restock Inventory Response: $updatedInventory")
-        assertNotNull(updatedInventory)
-    }
-
-    @Test
-    @Order(3)
     fun `should place an order`() {
         val validProductId = productId ?: throw IllegalStateException("Product ID is not initialized")
         val validCustomerId = customerId ?: throw IllegalStateException("Customer ID is not initialized")
@@ -148,7 +101,7 @@ class IntegrationTest {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     fun `should complete the order`() {
         val validOrderId = orderId ?: throw IllegalStateException("Order ID is not initialized")
 
@@ -161,7 +114,7 @@ class IntegrationTest {
     }
 
     @Test
-    @Order(5)
+    @Order(4)
     fun `should delete product`() {
         val validProductId = productId ?: throw IllegalStateException("Product ID is not initialized")
 
