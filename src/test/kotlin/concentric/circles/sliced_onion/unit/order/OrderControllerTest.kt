@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -18,6 +19,8 @@ import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class OrderControllerTest {
+
+    private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 
     private lateinit var mockMvc: MockMvc
 
@@ -60,10 +63,22 @@ class OrderControllerTest {
     }
 
     @Test
+    fun `should return 400 when creating order with invalid data`() {
+        val invalidOrderDto = "{ \"productIds\": [] }"
+
+        mockMvc.perform(
+            post("/order")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(invalidOrderDto)
+        )
+            .andExpect(status().isBadRequest)
+    }
+
+    @Test
     fun `should return order by id`() {
         val order = Order(UUID.randomUUID())
         val orderId = order.orderId
-        Mockito.`when`(orderService.getOrder(orderId)).thenReturn(order)
+        `when`(orderService.getOrder(orderId)).thenReturn(order)
 
         mockMvc.perform(get("/order/$orderId"))
             .andExpect(status().isOk)
@@ -73,7 +88,7 @@ class OrderControllerTest {
     @Test
     fun `should return 404 when order not found`() {
         val orderId = UUID.randomUUID()
-        Mockito.`when`(orderService.getOrder(orderId)).thenReturn(null)
+        `when`(orderService.getOrder(orderId)).thenReturn(null)
 
         mockMvc.perform(get("/order/$orderId"))
             .andExpect(status().isNotFound)
@@ -83,18 +98,26 @@ class OrderControllerTest {
     fun `should delete order`() {
         val order = Order(UUID.randomUUID())
         val orderId = order.orderId
-        Mockito.`when`(orderService.getOrder(orderId)).thenReturn(order)
-        Mockito.doNothing().`when`(orderService).deleteOrder(order)
+        `when`(orderService.getOrder(orderId)).thenReturn(order)
 
         mockMvc.perform(delete("/order/$orderId"))
             .andExpect(status().isNoContent)
     }
 
     @Test
+    fun `should return 404 when deleting non-existing order`() {
+        val orderId = UUID.randomUUID()
+        `when`(orderService.getOrder(orderId)).thenReturn(null)
+
+        mockMvc.perform(delete("/order/$orderId"))
+            .andExpect(status().isNotFound)
+    }
+
+    @Test
     fun `should complete order`() {
         val order = Order(UUID.randomUUID())
         val orderId = order.orderId
-        Mockito.`when`(orderService.completeOrder(orderId)).thenAnswer {
+        `when`(orderService.completeOrder(orderId)).thenAnswer {
             order.status = OrderStatus.COMPLETED
             order
         }
@@ -103,5 +126,14 @@ class OrderControllerTest {
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.orderId").value(orderId.toString()))
             .andExpect(jsonPath("$.status").value(OrderStatus.COMPLETED.toString()))
+    }
+
+    @Test
+    fun `should return 400 when completing non-existing order`() {
+        val orderId = UUID.randomUUID()
+        `when`(orderService.completeOrder(orderId)).thenReturn(null)
+
+        mockMvc.perform(put("/order/$orderId/complete"))
+            .andExpect(status().isBadRequest)
     }
 }
